@@ -34,45 +34,74 @@ const ShoeCard = ({
   return (
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
-        <ImageWrapper>
+        <ImageWrapper>          
           <Image alt="" src={imageSrc} />
+          {variant === 'on-sale' && <ReleaseBanner style={{'--background-color': COLORS.primary}}>Sale</ReleaseBanner>}     
+          {variant === 'new-release' && <ReleaseBanner style={{'--background-color': COLORS.secondary}}>Just Released!</ReleaseBanner>}   
         </ImageWrapper>
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
-          <Price>{formatPrice(price)}</Price>
+          <Price style={{
+            '--text-decoration': variant === 'on-sale' ? 'line-through' : 'revert'
+          }}>{formatPrice(price)}</Price>
         </Row>
         <Row>
           <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
+          {variant === 'on-sale' && <SalePrice>{formatPrice(salePrice)}</SalePrice>}
         </Row>
       </Wrapper>
     </Link>
   );
 };
 
+const ReleaseBanner = styled.div`
+  color: ${COLORS.white};
+  background-color: var(--background-color);
+  position: absolute;
+  top: 12px;
+  right: -4px;
+  height: 32px;
+  text-align: center;
+  padding: 8px;
+  padding-top: 9px;
+  font-size: 14px;
+  font-weight: ${WEIGHTS.bold};
+  line-height: 14px;
+  border-radius: 2px;
+`;
+
 const Link = styled.a`
   text-decoration: none;
   color: inherit;
 `;
 
-const Wrapper = styled.article``;
+const Wrapper = styled.article`  
+`;
 
 const ImageWrapper = styled.div`
   position: relative;
 `;
 
-const Image = styled.img``;
+const Image = styled.img`
+  border-radius: 16px 16px 4px 4px;
+  width: 100%;
+`;
 
 const Row = styled.div`
   font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Name = styled.h3`
   font-weight: ${WEIGHTS.medium};
-  color: ${COLORS.gray[900]};
+  color: ${COLORS.gray[900]};  
 `;
 
-const Price = styled.span``;
+const Price = styled.span`
+  text-decoration: var(--text-decoration);
+`;
 
 const ColorInfo = styled.p`
   color: ${COLORS.gray[700]};
